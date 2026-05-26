@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Final - Variables</title>
+    <style>
+        /* Identidad Visual Colegio Escolaris */
+        :root {
+            --naranja: #db6015;
+            --amarillo: #f7be00;
+            --azul: #244b5a;
+            --rojo: #993921;
+            --fondo-azul: #f0f8ff;
+            --blanco: #ffffff;
+            --gris-fondo: #f9f9f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--blanco);
+            color: var(--azul);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, var(--azul), #1a3642);
+            color: var(--blanco);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-banner h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            color: var(--amarillo);
+        }
+
+        .header-banner p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .content-section {
+            background-color: var(--fondo-azul);
+            border-left: 6px solid var(--naranja);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: var(--rojo);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            background-color: var(--blanco);
+            margin-bottom: 15px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .step-number {
+            background-color: var(--amarillo);
+            color: var(--azul);
+            font-weight: bold;
+            font-size: 1.2rem;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Estilos de la sección Owlaris */
+        .owlaris-section {
+            background-color: #fff3cd;
+            border: 2px solid var(--amarillo);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .owlaris-section h2 {
+            color: var(--rojo);
+            margin-top: 0;
+            justify-content: center;
+        }
+
+        .prompt-text {
+            background-color: var(--blanco);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1rem;
+            color: var(--azul);
+            text-align: left;
+            border-left: 4px solid var(--naranja);
+            margin: 15px 0;
+        }
+
+        .btn-copy {
+            background-color: var(--blanco);
+            border: 2px solid var(--naranja);
+            color: var(--naranja);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-copy:hover {
+            background-color: var(--naranja);
+            color: var(--blanco);
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .tip-card {
+            background-color: var(--blanco);
+            border: 1px solid #ddd;
+            border-top: 4px solid var(--naranja);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .tip-card h3 {
+            margin-top: 0;
+            color: var(--azul);
+            font-size: 1.1rem;
+        }
+
+        table.rubric {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--blanco);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        table.rubric th {
+            background-color: var(--azul);
+            color: var(--blanco);
+            padding: 12px;
+            text-align: left;
+        }
+
+        table.rubric td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table.rubric tr:last-child td {
+            border-bottom: none;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: var(--rojo);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-banner">
+        <h1>🎬 Proyecto Final: ¡Tu turno de enseñar!</h1>
+        <p>Demuestra lo que has aprendido sobre variables matemáticas creando tu propio video explicativo.</p>
+    </div>
+
+    <div class="content-section">
+        <h2>🎯 Tu Misión</h2>
+        <p>Has practicado cómo traducir situaciones de la vida real al lenguaje del álgebra. Ahora, vas a grabar un video corto (de 2 a 3 minutos máximo) donde <strong>tú serás el maestro</strong>. Deberás explicar con tus propias palabras qué es una variable y mostrar dos ejemplos cotidianos.</p>
+    </div>
+
+    <div class="content-section" style="border-left-color: var(--amarillo);">
+        <h2>📝 Instrucciones Paso a Paso</h2>
+        <ul class="step-list">
+            <li>
+                <div class="step-number">1</div>
+                <div>
+                    <strong>Prepara tu guion:</strong> Antes de grabar, anota lo que vas a decir. Asegúrate de incluir la definición de <span class="highlight">Variable</span>, <span class="highlight">Cantidad Fija</span> y <span class="highlight">Expresión Algebraica</span>.
+                </div>
+            </li>
+            <li>
+                <div class="step-number">2</div>
+                <div>
+                    <strong>Inventa 2 ejemplos:</strong> Piensa en dos situaciones de tu vida diaria (compras, deportes, pasatiempos) donde una cantidad cambie. <em>Nota: No puedes usar los ejemplos vistos en clase (como los cuadernos, el cine o el bus). ¡Sé creativo!</em>
+                </div>
+            </li>
+            <li>
+                <div class="step-number">3</div>
+                <div>
+                    <strong>Prepara tu escenario:</strong> Puedes usar una pizarra, una hoja de papel en blanco, un cuaderno o cartulinas. Usa marcadores o lapiceros de colores oscuros para que se lea bien en la cámara.
+                </div>
+            </li>
+            <li>
+                <div class="step-number">4</div>
+                <div>
+                    <strong>¡Acción!:</strong> Graba tu explicación. Vas a ir escribiendo o señalando tu hoja mientras hablas. <strong>No es obligatorio que muestres tu rostro</strong> si no lo deseas, pero tu voz debe escucharse con mucha claridad y tus apuntes deben verse perfectamente.
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Integración de Owlaris como Revisor de Guion -->
+    <div class="owlaris-section">
+        <h2>🦉 Paso Recomendado: El Visto Bueno de Owlaris</h2>
+        <p>Antes de ponerte a grabar, asegúrate de que tus ejemplos sean correctos. Cuéntale tu idea a tu tutor virtual Owlaris para que te dé sugerencias.</p>
+        <p>Copia el siguiente mensaje, complétalo con tus ideas y pégalo en el chat de Owlaris:</p>
+        
+        <div class="prompt-text" id="owlaris-prompt">
+            Owlaris, para mi proyecto de matematica elegi esta situacion: [Escribe aqui tu situacion, por ejemplo: comprar manzanas a Q3]. Mi cantidad fija es [X] y mi variable es [Y]. ¿Tiene sentido mi ejemplo o me sugieres revisar algo? Recuerda no darme la respuesta exacta, solo guiame.
+        </div>
+        
+        <button class="btn-copy" onclick="copyOwlarisPrompt()">📋 Copiar mensaje para Owlaris</button>
+        <p id="copy-owlaris-msg" style="color: #28a745; font-weight: bold; display: none; margin-top:10px;">¡Copiado! Ve al chat de tu tutor.</p>
+    </div>
+
+    <div class="content-section" style="border-left-color: var(--rojo);">
+        <h2>📱 Tips de Producción (Para un video de 100 puntos)</h2>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <h3>💡 Iluminación</h3>
+                <p>Graba de día cerca de una ventana o pon una lámpara que alumbre directamente tu cuaderno. Evita hacer sombras con tu propia mano o teléfono.</p>
+            </div>
+            <div class="tip-card">
+                <h3>🎙️ Audio Claro</h3>
+                <p>Graba en un lugar silencioso (apaga la tele o la música de fondo). Habla fuerte, claro y con energía. ¡Imagina que le explicas a un amigo!</p>
+            </div>
+            <div class="tip-card">
+                <h3>📷 Estabilidad</h3>
+                <p>Evita que el teléfono tiemble. Puedes apoyarlo sobre una pila de libros apuntando hacia abajo, o pedirle a alguien en casa que te ayude a sostenerlo firmemente.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section" style="border-left-color: var(--azul);">
+        <h2>📊 ¿Cómo se calificará tu video?</h2>
+        <p>Asegúrate de cumplir con los siguientes criterios antes de subir tu archivo mp4 o enlace a Canvas:</p>
+        <table class="rubric">
+            <tr>
+                <th style="width: 20%;">Criterio</th>
+                <th>Descripción</th>
+                <th style="width: 15%;">Punteo</th>
+            </tr>
+            <tr>
+                <td><strong>Conceptos Claros</strong></td>
+                <td>Explica correctamente y con sus propias palabras qué es una variable, una cantidad fija y una expresión algebraica.</td>
+                <td><strong>40 pts</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Ejemplos Propios</strong></td>
+                <td>Presenta 2 ejemplos cotidianos originales, identificando claramente cuál es la letra (variable), cuál es la cantidad fija y cuál es la expresión completa.</td>
+                <td><strong>40 pts</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Calidad Técnica</strong></td>
+                <td>La voz es fuerte y comprensible. La hoja o pizarra está bien iluminada y la escritura es legible para el profesor.</td>
+                <td><strong>20 pts</strong></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function copyOwlarisPrompt() {
+            let promptText = document.getElementById('owlaris-prompt').innerText;
+            navigator.clipboard.writeText(promptText).then(() => {
+                document.getElementById('copy-owlaris-msg').style.display = "block";
+                setTimeout(() => { document.getElementById('copy-owlaris-msg').style.display = "none"; }, 4000);
+            });
+        }
+    </script>
+</body>
+</html>

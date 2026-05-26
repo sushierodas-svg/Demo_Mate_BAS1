@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Escolaris - Canvas LMS Simulator</title>
+    <style>
+        :root {
+            --canvas-nav: #244b5a; /* Azul oscuro Escolaris */
+            --canvas-menu: #ffffff;
+            --canvas-bg: #f9f9f9;
+            --naranja: #db6015;
+            --amarillo: #f7be00;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: var(--canvas-bg);
+            overflow: hidden;
+        }
+
+        /* Barra de Navegación Global (Izquierda) */
+        .global-nav {
+            width: 84px;
+            background-color: var(--canvas-nav);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 15px;
+            z-index: 10;
+        }
+
+        .global-nav-item {
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            color: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .global-nav-item:hover {
+            background-color: var(--naranja);
+        }
+
+        .global-nav-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        /* Menú del Curso */
+        .course-nav {
+            width: 250px;
+            background-color: var(--canvas-menu);
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-title {
+            color: var(--canvas-nav);
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--amarillo);
+            padding-bottom: 10px;
+        }
+
+        .module-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .module-item {
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s;
+        }
+
+        .module-item:hover {
+            background-color: #f0f8ff;
+            color: var(--naranja);
+        }
+
+        .module-item.active {
+            background-color: #e6f2ff;
+            border-left: 4px solid var(--naranja);
+            font-weight: bold;
+            color: var(--canvas-nav);
+        }
+
+        /* Contenido Principal (Iframe) */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header-bar {
+            height: 60px;
+            background-color: white;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 1.2rem;
+            color: #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .iframe-container {
+            flex: 1;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* Botones Siguiente / Anterior de Canvas */
+        .module-navigation {
+            height: 70px;
+            background-color: white;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+        }
+
+        .btn-nav {
+            padding: 10px 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            color: #333;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-nav:hover {
+            background-color: #f5f5f5;
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="global-nav">
+        <div style="background-color: white; padding: 10px; border-radius: 5px; margin-bottom: 20px; width: 50px; text-align: center; font-weight: bold; color: var(--naranja);">Esc</div>
+        <div class="global-nav-item"><div class="global-nav-icon">👤</div>Cuenta</div>
+        <div class="global-nav-item"><div class="global-nav-icon">🎛️</div>Tablero</div>
+        <div class="global-nav-item" style="background-color: var(--naranja);"><div class="global-nav-icon">📚</div>Cursos</div>
+        <div class="global-nav-item"><div class="global-nav-icon">🦉</div>Owlaris</div>
+    </div>
+
+    <div class="course-nav">
+        <div class="course-title">Matemática - 1ro Básico</div>
+        <div style="font-size: 0.9rem; color: #666; margin-bottom: 10px; font-weight: bold;">Módulo 1: Variables</div>
+        <ul class="module-list" id="menu-list">
+            <li class="module-item active" onclick="loadContent(0)">▶️ 1. Video Introductorio</li>
+            <li class="module-item" onclick="loadContent(1)">📖 2. Guía Interactiva</li>
+            <li class="module-item" onclick="loadContent(2)">✏️ 3. Práctica Guiada</li>
+            <li class="module-item" onclick="loadContent(3)">🎬 4. Proyecto Final</li>
+            <li class="module-item" onclick="loadContent(4)">✅ 5. Ticket de Salida</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-bar" id="header-title">
+            1. Video Introductorio
+        </div>
+        
+        <div class="iframe-container">
+            <iframe id="canvas-iframe" src="" title="Contenido del Curso"></iframe>
+        </div>
+
+        <div class="module-navigation">
+            <button class="btn-nav" id="btn-prev" onclick="navigate(-1)">⬅️ Anterior</button>
+            <button class="btn-nav" id="btn-next" onclick="navigate(1)">Siguiente ➡️</button>
+        </div>
+    </div>
+
+    <script>
+        // Array con los archivos locales que creamos (Asegúrate de que estén en la misma carpeta)
+        const contentPages = [
+            { title: "1. Video Introductorio", file: "video_placeholder.html" }, // Puedes poner aquí el enlace al video final
+            { title: "2. Guía Interactiva", file: "guia.html" },
+            { title: "3. Práctica Guiada con Owlaris", file: "practica.html" },
+            { title: "4. Proyecto Final", file: "proyecto.html" },
+            { title: "5. Ticket de Salida", file: "cierre.html" }
+        ];
+
+        let currentIndex = 0;
+
+        function loadContent(index) {
+            currentIndex = index;
+            
+            // Actualizar Iframe
+            document.getElementById('canvas-iframe').src = contentPages[currentIndex].file;
+            
+            // Actualizar Título
+            document.getElementById('header-title').innerText = contentPages[currentIndex].title;
+            
+            // Actualizar Menú Activo
+            const menuItems = document.querySelectorAll('.module-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+            menuItems[currentIndex].classList.add('active');
+
+            // Control de Botones
+            document.getElementById('btn-prev').disabled = currentIndex === 0;
+            document.getElementById('btn-next').disabled = currentIndex === contentPages.length - 1;
+        }
+
+        function navigate(direction) {
+            let newIndex = currentIndex + direction;
+            if (newIndex >= 0 && newIndex < contentPages.length) {
+                loadContent(newIndex);
+            }
+        }
+
+        // Cargar la primera página al iniciar
+        window.onload = () => loadContent(0);
+    </script>
+</body>
+</html>

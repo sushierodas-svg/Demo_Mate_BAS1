@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cierre de Lección - Variables</title>
+    <style>
+        /* Identidad Visual Colegio Escolaris */
+        :root {
+            --naranja: #db6015;
+            --amarillo: #f7be00;
+            --azul: #244b5a;
+            --rojo: #993921;
+            --fondo-azul: #f0f8ff;
+            --blanco: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--fondo-azul);
+            color: var(--azul);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .card-container {
+            background-color: var(--blanco);
+            width: 100%;
+            max-width: 650px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Barra decorativa superior */
+        .card-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--naranja), var(--amarillo), var(--azul), var(--rojo));
+        }
+
+        h2 {
+            color: var(--naranja);
+            font-size: 2rem;
+            margin-top: 0;
+        }
+
+        .metacognition-box {
+            background-color: var(--fondo-azul);
+            border: 2px solid var(--azul);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .metacognition-box h3 {
+            color: var(--azul);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: none;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--naranja);
+            box-shadow: 0 0 5px rgba(219, 96, 21, 0.3);
+        }
+
+        .btn-finish {
+            background-color: var(--azul);
+            color: var(--blanco);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-finish:hover {
+            background-color: var(--naranja);
+            transform: translateY(-2px);
+        }
+
+        /* Sección de Cierre (Oculta hasta completar) */
+        #celebration-section {
+            display: none;
+            animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .badge {
+            font-size: 5rem;
+            margin: 20px 0;
+            animation: pulse 2s infinite;
+        }
+
+        .curriculum-bridge {
+            background-color: #fff3cd;
+            border-left: 5px solid var(--amarillo);
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            color: var(--azul);
+            margin-top: 20px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .error-msg {
+            color: var(--rojo);
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container" id="main-card">
+        
+        <!-- Fase 1: Metacognición -->
+        <div id="reflection-section">
+            <h2>💭 Reflexión Final</h2>
+            <p>Antes de terminar, tómate un momento para consolidar lo que has aprendido en esta lección.</p>
+            
+            <div class="metacognition-box">
+                <h3>💡 ¿Qué fue lo más importante?</h3>
+                <p>Si tuvieras que explicarle a un compañero qué es una variable y para qué sirve usar letras en matemática, ¿qué le dirías?</p>
+                <textarea id="reflection-text" placeholder="Escribe tu respuesta aquí..."></textarea>
+                <div id="error-msg" class="error-msg">Por favor, escribe al menos una breve reflexión para continuar.</div>
+            </div>
+
+            <button class="btn-finish" onclick="completeLesson()">Guardar y Finalizar Lección 🚀</button>
+        </div>
+
+        <!-- Fase 2: Cierre y Sello Visual -->
+        <div id="celebration-section">
+            <h2 style="color: var(--azul);">¡Excelente trabajo!</h2>
+            <div class="badge">🏆</div>
+            <h3 style="color: var(--naranja);">Has completado la Clase 1</h3>
+            
+            <div class="curriculum-bridge">
+                <strong>El siguiente paso:</strong><br>
+                Hoy aprendiste que una variable no es una letra al azar: representa una cantidad que puede cambiar. En la siguiente clase usarás esa variable para construir expresiones algebraicas sencillas.
+            </div>
+
+            <p style="margin-top: 25px; font-weight: bold;">
+                Ya puedes hacer clic en "Siguiente" en Canvas para avanzar.
+            </p>
+        </div>
+
+    </div>
+
+    <script>
+        function completeLesson() {
+            const textArea = document.getElementById('reflection-text');
+            const errorMsg = document.getElementById('error-msg');
+            
+            // Validar que el estudiante haya escrito algo
+            if (textArea.value.trim().length < 5) {
+                errorMsg.style.display = 'block';
+                textArea.style.borderColor = 'var(--rojo)';
+                return;
+            }
+
+            // Ocultar sección de reflexión y mostrar celebración
+            document.getElementById('reflection-section').style.display = 'none';
+            document.getElementById('celebration-section').style.display = 'block';
+            
+            // Efecto visual al finalizar
+            document.getElementById('main-card').style.border = '2px solid var(--amarillo)';
+        }
+    </script>
+</body>
+</html>

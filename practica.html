@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica Guiada - Variables con Owlaris</title>
+    <style>
+        /* Identidad Visual Colegio Escolaris */
+        :root {
+            --naranja: #db6015;
+            --amarillo: #f7be00;
+            --azul: #244b5a;
+            --rojo: #993921;
+            --fondo-azul: #f0f8ff;
+            --blanco: #ffffff;
+            --gris-claro: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--fondo-azul);
+            color: var(--azul);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background-color: var(--blanco);
+            width: 100%;
+            max-width: 700px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h2 {
+            color: var(--naranja);
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: var(--gris-claro);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--amarillo);
+            width: 33%;
+            transition: width 0.4s ease;
+        }
+
+        .step-card {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .step-card.active {
+            display: block;
+        }
+
+        .scenario-box {
+            background-color: var(--fondo-azul);
+            border-left: 5px solid var(--azul);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .question-group {
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: var(--azul);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-option {
+            background-color: var(--blanco);
+            border: 2px solid var(--azul);
+            color: var(--azul);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-option:hover {
+            background-color: var(--fondo-azul);
+        }
+
+        .btn-option.selected-correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .btn-option.selected-incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+            animation: shake 0.4s;
+        }
+
+        .btn-option:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn-continue {
+            background-color: var(--naranja);
+            color: var(--blanco);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            display: none;
+            transition: background 0.3s;
+        }
+
+        .btn-continue:hover {
+            background-color: var(--rojo);
+        }
+
+        .feedback-msg {
+            margin-top: 10px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        /* Estilos del Tutor Owlaris */
+        #owlaris-box {
+            display: none;
+            background-color: #fff3cd;
+            border: 2px solid var(--amarillo);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+            animation: fadeIn 0.5s;
+            text-align: center;
+        }
+
+        #owlaris-box h3 {
+            color: var(--rojo);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .prompt-text {
+            background-color: var(--blanco);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1rem;
+            color: var(--azul);
+            text-align: left;
+            border-left: 4px solid var(--naranja);
+            margin-bottom: 15px;
+        }
+
+        /* Reporte Final */
+        #final-report {
+            text-align: center;
+        }
+
+        .report-box {
+            background-color: #f8f9fa;
+            border: 2px dashed var(--azul);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            text-align: left;
+            color: var(--azul);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎯 Práctica Guiada Interactiva</h2>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress"></div>
+    </div>
+
+    <!-- Ejercicio 1 -->
+    <div class="step-card active" id="step-1">
+        <div class="scenario-box">
+            🥖 <strong>Situación 1:</strong> Una bolsa tiene 6 panes. Si cambia el número de bolsas, la variable puede ser la letra <strong>b</strong>.
+        </div>
+        
+        <div class="question-group">
+            <h3>1. La variable "b" representa:</h3>
+            <div class="options-grid">
+                <button class="btn-option q1-opt" onclick="checkAnswer(1, 1, false, this)">La cantidad de panes</button>
+                <button class="btn-option q1-opt" onclick="checkAnswer(1, 1, true, this)">El número de bolsas</button>
+            </div>
+            <div id="fb-1-1" class="feedback-msg"></div>
+        </div>
+
+        <div class="question-group" id="part-1-2" style="display:none;">
+            <h3>2. La cantidad fija es:</h3>
+            <div class="options-grid">
+                <button class="btn-option q1-2-opt" onclick="checkAnswer(1, 2, true, this)">6 (los panes por bolsa)</button>
+                <button class="btn-option q1-2-opt" onclick="checkAnswer(1, 2, false, this)">El número de bolsas</button>
+            </div>
+            <div id="fb-1-2" class="feedback-msg"></div>
+        </div>
+
+        <button class="btn-continue" id="btn-next-1" onclick="nextStep(2)">¡Excelente! Siguiente Ejercicio ➡️</button>
+    </div>
+
+    <!-- Ejercicio 2 -->
+    <div class="step-card" id="step-2">
+        <div class="scenario-box">
+            ✏️ <strong>Situación 2:</strong> Una caja tiene 12 lápices. Si cambia el número de cajas, la variable puede ser <strong>c</strong>.
+        </div>
+        
+        <div class="question-group">
+            <h3>1. La variable "c" representa:</h3>
+            <div class="options-grid">
+                <button class="btn-option q2-opt" onclick="checkAnswer(2, 1, true, this)">El número de cajas</button>
+                <button class="btn-option q2-opt" onclick="checkAnswer(2, 1, false, this)">Los 12 lápices</button>
+            </div>
+            <div id="fb-2-1" class="feedback-msg"></div>
+        </div>
+
+        <div class="question-group" id="part-2-2" style="display:none;">
+            <h3>2. La cantidad fija es:</h3>
+            <div class="options-grid">
+                <button class="btn-option q2-2-opt" onclick="checkAnswer(2, 2, false, this)">El total de lápices al final</button>
+                <button class="btn-option q2-2-opt" onclick="checkAnswer(2, 2, true, this)">12 (los lápices por caja)</button>
+            </div>
+            <div id="fb-2-2" class="feedback-msg"></div>
+        </div>
+
+        <button class="btn-continue" id="btn-next-2" onclick="nextStep(3)">¡Muy bien! Último Ejercicio ➡️</button>
+    </div>
+
+    <!-- Ejercicio 3 -->
+    <div class="step-card" id="step-3">
+        <div class="scenario-box">
+            🚌 <strong>Situación 3:</strong> Un bus cobra Q3 por pasajero. Si cambia el número de pasajeros, la variable puede ser <strong>p</strong>.
+        </div>
+        
+        <div class="question-group">
+            <h3>1. La variable "p" representa:</h3>
+            <div class="options-grid">
+                <button class="btn-option q3-opt" onclick="checkAnswer(3, 1, false, this)">El precio del pasaje (Q3)</button>
+                <button class="btn-option q3-opt" onclick="checkAnswer(3, 1, true, this)">El número de pasajeros</button>
+            </div>
+            <div id="fb-3-1" class="feedback-msg"></div>
+        </div>
+
+        <div class="question-group" id="part-3-2" style="display:none;">
+            <h3>2. La cantidad fija es:</h3>
+            <div class="options-grid">
+                <button class="btn-option q3-2-opt" onclick="checkAnswer(3, 2, true, this)">Q3 (el cobro por persona)</button>
+                <button class="btn-option q3-2-opt" onclick="checkAnswer(3, 2, false, this)">El número de buses</button>
+            </div>
+            <div id="fb-3-2" class="feedback-msg"></div>
+        </div>
+
+        <button class="btn-continue" id="btn-next-3" onclick="generateReport()">Generar mi Reporte de Punteo 📝</button>
+    </div>
+
+    <!-- Integración del Tutor Owlaris -->
+    <div id="owlaris-box">
+        <h3>🦉 ¿Necesitas ayuda, estudiante?</h3>
+        <p>Parece que este ejercicio está un poco confuso. ¡No te preocupes! Copia este mensaje, pégalo en el chat de tu tutor virtual Owlaris y descubre la respuesta por ti mismo:</p>
+        <div class="prompt-text" id="owlaris-prompt">
+            "Estoy aprendiendo variables en primero basico. Dame una pista para reconocer que cantidad cambia en una situacion cotidiana. No me des la respuesta completa; hazme una pregunta para que yo la encuentre."
+        </div>
+        <button class="btn-option" style="border-color: var(--naranja);" onclick="copyOwlarisPrompt()">📋 Copiar mensaje para Owlaris</button>
+        <p id="copy-owlaris-msg" style="color: #28a745; font-weight: bold; display: none; margin-top:10px;">¡Mensaje copiado! Ve al chat de Owlaris.</p>
+    </div>
+
+    <!-- Reporte Final -->
+    <div class="step-card" id="final-report">
+        <h2>🎉 ¡Práctica Completada!</h2>
+        <p>Has identificado correctamente las variables y las cantidades fijas en todas las situaciones.</p>
+        
+        <div class="report-box" id="report-text">
+            <strong>REPORTE DE PRÁCTICA GUIADA</strong><br>
+            <strong>Materia:</strong> Matemática 1ro Básico<br>
+            <strong>Tema:</strong> Variables y Cantidades Fijas<br>
+            <strong>Estado:</strong> APROBADO ✅<br>
+            <strong>Código de validación:</strong> MATH-VAR-<span id="random-code"></span><br>
+            <em>"Comprendo que una variable representa la cantidad que cambia, y la cantidad fija es el número que se mantiene igual."</em>
+        </div>
+
+        <button class="btn-option" style="width: 100%; background-color: var(--azul); color: white;" onclick="copyReport()">
+            📋 Copiar Reporte para Canvas
+        </button>
+        <p id="copy-msg" style="color: #28a745; font-weight: bold; display: none; margin-top:10px;">¡Copiado! Ahora pégalo en la entrega de tu tarea.</p>
+    </div>
+
+</div>
+
+<script>
+    let state = {
+        step1: { q1: false, q2: false },
+        step2: { q1: false, q2: false },
+        step3: { q1: false, q2: false }
+    };
+
+    function checkAnswer(step, questionNum, isCorrect, btnElement) {
+        let optionsClass = `.q${step}${questionNum === 2 ? '-2' : ''}-opt`;
+        let buttons = document.querySelectorAll(optionsClass);
+        let fbBox = document.getElementById(`fb-${step}-${questionNum}`);
+        let owlarisBox = document.getElementById('owlaris-box');
+
+        if (isCorrect) {
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.classList.remove('selected-incorrect');
+            });
+            btnElement.classList.add('selected-correct');
+            fbBox.innerHTML = "✅ ¡Correcto!";
+            fbBox.style.color = "#28a745";
+            owlarisBox.style.display = "none"; // Ocultar Owlaris si acierta
+
+            state[`step${step}`][`q${questionNum}`] = true;
+
+            if (questionNum === 1) {
+                document.getElementById(`part-${step}-2`).style.display = "block";
+                document.getElementById(`part-${step}-2`).scrollIntoView({ behavior: 'smooth' });
+            } else if (questionNum === 2 && state[`step${step}`].q1) {
+                document.getElementById(`btn-next-${step}`).style.display = "block";
+            }
+        } else {
+            btnElement.classList.add('selected-incorrect');
+            fbBox.innerHTML = "❌ ¡Ups! Intenta de nuevo.";
+            fbBox.style.color = "#dc3545";
+            setTimeout(() => btnElement.classList.remove('selected-incorrect'), 400);
+            
+            // Mostrar tarjeta de Owlaris al equivocarse
+            owlarisBox.style.display = "block";
+            owlarisBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    function nextStep(nextStepNum) {
+        document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
+        document.getElementById(`step-${nextStepNum}`).classList.add('active');
+        let progressPercent = (nextStepNum - 1) * 33.33;
+        document.getElementById('progress').style.width = `${progressPercent}%`;
+        document.getElementById('owlaris-box').style.display = "none"; // Limpiar Owlaris al pasar de paso
+    }
+
+    function generateReport() {
+        document.querySelectorAll('.step-card').forEach(card => card.classList.remove('active'));
+        document.getElementById('final-report').classList.add('active');
+        document.getElementById('progress').style.width = "100%";
+        document.getElementById('owlaris-box').style.display = "none";
+        
+        let code = Math.floor(1000 + Math.random() * 9000);
+        document.getElementById('random-code').innerText = code;
+    }
+
+    function copyReport() {
+        let reportText = document.getElementById('report-text').innerText;
+        navigator.clipboard.writeText(reportText).then(() => {
+            document.getElementById('copy-msg').style.display = "block";
+            setTimeout(() => { document.getElementById('copy-msg').style.display = "none"; }, 3000);
+        });
+    }
+
+    function copyOwlarisPrompt() {
+        let promptText = document.getElementById('owlaris-prompt').innerText;
+        // Limpiamos las comillas extra para copiar limpio
+        promptText = promptText.replace(/"/g, '').trim(); 
+        navigator.clipboard.writeText(promptText).then(() => {
+            document.getElementById('copy-owlaris-msg').style.display = "block";
+            setTimeout(() => { document.getElementById('copy-owlaris-msg').style.display = "none"; }, 4000);
+        });
+    }
+</script>
+
+</body>
+</html>

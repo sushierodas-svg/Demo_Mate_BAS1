@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clase 1 - Cuando Una Cantidad Cambia</title>
+    <style>
+        /* Paleta de Colores Escolaris */
+        :root {
+            --naranja: #db6015;
+            --amarillo: #f7be00;
+            --azul: #244b5a;
+            --rojo: #993921;
+            --fondo-azul: #f0f8ff;
+            --blanco: #ffffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--fondo-azul);
+            overflow: hidden; /* Comportamiento de presentacion */
+            color: var(--azul);
+        }
+
+        /* Contenedor principal de la presentación */
+        #presentation-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Diapositivas */
+        .slide {
+            width: 85%;
+            height: 85%;
+            background-color: var(--blanco);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: none; /* Ocultas por defecto */
+            padding: 40px;
+            box-sizing: border-box;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .active-slide {
+            display: flex;
+        }
+
+        h1, h2, h3 {
+            color: var(--naranja);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Navegación (Flechas) */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 3rem;
+            color: var(--naranja);
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.2s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-50%) scale(1.2);
+            color: var(--rojo);
+        }
+
+        #prev-btn { left: 10px; }
+        #next-btn { right: 10px; }
+
+        /* Botones e Interactividad */
+        .btn-interactivo {
+            background-color: var(--azul);
+            color: var(--blanco);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-interactivo:hover {
+            background-color: var(--naranja);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+            width: 80%;
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Rejillas y contenedores especiales */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: var(--fondo-azul);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid var(--amarillo);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegación Lateral -->
+    <button id="prev-btn" class="nav-btn" onclick="changeSlide(-1)" style="display:none;">⬅️</button>
+    <button id="next-btn" class="nav-btn" onclick="changeSlide(1)">➡️</button>
+
+    <div id="presentation-container">
+
+        <!-- 1. Portada -->
+        <div class="slide active-slide" id="slide-1">
+            <h1>MATEMÁTICA | 1ro Básico</h1>
+            <h2 style="color: var(--azul); font-size: 2.5rem;">Cuando una cantidad cambia</h2>
+            <div style="font-size: 4rem; margin: 20px 0;">📈🔍</div>
+            <p>¡Hola! Prepárate para descubrir el lenguaje secreto de los patrones matemáticos.</p>
+        </div>
+
+        <!-- 2. Objetivos -->
+        <div class="slide" id="slide-2">
+            <h2>🎯 Objetivos de Aprendizaje</h2>
+            <div class="card">
+                <p>✔️ Identificar una <strong>variable</strong> como una cantidad que puede cambiar en una situación cotidiana.</p>
+                <p>✔️ Diferenciar claramente entre una <strong>cantidad fija</strong> y una variable.</p>
+            </div>
+        </div>
+
+        <!-- 3. Activación -->
+        <div class="slide" id="slide-3">
+            <h2>🤔 Para pensar...</h2>
+            <p>Imagina que estás comprando cuadernos. Cada cuaderno cuesta <strong>Q5</strong>.</p>
+            <div class="grid-2">
+                <div class="card">Si compras 1, pagas Q5</div>
+                <div class="card">Si compras 2, pagas Q10</div>
+            </div>
+            <h3 style="margin-top: 30px; color: var(--rojo);">¿Qué cambia y qué se mantiene igual?</h3>
+        </div>
+
+        <!-- 4. Palabras Clave -->
+        <div class="slide" id="slide-4">
+            <h2>🔑 Palabras Clave</h2>
+            <div class="grid-2" style="text-align: left;">
+                <div class="card">
+                    <h3 style="color: var(--naranja);">Variable</h3>
+                    <p>Símbolo o letra que representa una cantidad que puede cambiar.</p>
+                </div>
+                <div class="card">
+                    <h3 style="color: var(--naranja);">Cantidad fija</h3>
+                    <p>Número que no cambia en una situación específica.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Contenido Principal -->
+        <div class="slide" id="slide-5">
+            <h2>📖 Concepto Central</h2>
+            <p>Una variable no se usa porque "se ve matemática"; se usa porque nos ayuda a hablar de muchas posibilidades al mismo tiempo.</p>
+            <div class="card" style="text-align: left;">
+                <p>En el ejemplo de los cuadernos:</p>
+                <ul>
+                    <li><strong>c</strong> representa la cantidad de cuadernos (puede valer 1, 2, 10...). ¡Es la variable!</li>
+                    <li><strong>Q5</strong> es el precio por cuaderno. ¡Es la cantidad fija!</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 6. Exploración Visual -->
+        <div class="slide" id="slide-6">
+            <h2>🔍 Haz clic para explorar</h2>
+            <p>Situación: Una botella contiene 2 litros de agua. ¿Qué pasa si hay más botellas?</p>
+            <div>
+                <button class="btn-interactivo" onclick="showExplore(1)">1 Botella</button>
+                <button class="btn-interactivo" onclick="showExplore(2)">2 Botellas</button>
+                <button class="btn-interactivo" onclick="showExplore(3)">3 Botellas</button>
+            </div>
+            <div id="explore-result" class="card" style="margin-top:20px; font-size:1.5rem; display:none;"></div>
+            <p style="margin-top:20px; color:var(--rojo);">La cantidad que cambia es el número de botellas. ¡Podemos representarla con la letra <strong>b</strong>!</p>
+        </div>
+
+        <!-- 7. Actividad de Comprensión -->
+        <div class="slide" id="slide-7">
+            <h2>🧠 Actividad Rápida</h2>
+            <p>Si una entrada al cine cuesta Q25 y el número de entradas que compras cambia...</p>
+            <h3>¿Qué podría representar la variable "e"?</h3>
+            <button class="btn-interactivo" onclick="checkAnswer('act1', false)">El precio de Q25</button>
+            <button class="btn-interactivo" onclick="checkAnswer('act1', true)">La cantidad de entradas compradas</button>
+            <button class="btn-interactivo" onclick="checkAnswer('act1', false)">El nombre del cine</button>
+            
+            <div id="feedback-act1" class="feedback"></div>
+        </div>
+
+        <!-- 8. Juego Educativo -->
+        <div class="slide" id="slide-8">
+            <h2>🎮 Juego: Clasifica los datos</h2>
+            <p>Situación: "Un bus cobra Q3 por pasajero. Si cambia el número de pasajeros..."</p>
+            <div class="grid-2">
+                <div>
+                    <h3>¿Qué es Q3?</h3>
+                    <button class="btn-interactivo" onclick="checkAnswer('juego1', true)">Cantidad Fija</button>
+                    <button class="btn-interactivo" onclick="checkAnswer('juego1', false)">Variable</button>
+                    <div id="feedback-juego1" class="feedback"></div>
+                </div>
+                <div>
+                    <h3>¿Qué es el número de pasajeros (p)?</h3>
+                    <button class="btn-interactivo" onclick="checkAnswer('juego2', false)">Cantidad Fija</button>
+                    <button class="btn-interactivo" onclick="checkAnswer('juego2', true)">Variable</button>
+                    <div id="feedback-juego2" class="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. Aplicación Práctica -->
+        <div class="slide" id="slide-9">
+            <h2>✏️ Aplícalo a tu vida</h2>
+            <p>Piensa en esta situación cotidiana:</p>
+            <div class="card">
+                <p><em>"Una caja de crayones siempre trae 12 colores, pero en la clase hay varias cajas."</em></p>
+            </div>
+            <p>¿Qué cantidad usarías como fija (que no cambia) y qué letra usarías como variable para lo que sí cambia?</p>
+            <button class="btn-interactivo" onclick="document.getElementById('reflexion').style.display='block'">Ver pista</button>
+            <p id="reflexion" style="display:none; color:var(--rojo); margin-top:15px;"><strong>Pista:</strong> El 12 es tu cantidad fija. Si usas la letra "c", representaría el número de cajas.</p>
+        </div>
+
+        <!-- 10. Repaso Final -->
+        <div class="slide" id="slide-10">
+            <h2>✅ Microverificación</h2>
+            <p>Marca verdadero o falso:</p>
+            <h3>En "Q4 por libra de arroz", si cambia el número de libras, ¿Q4 es la variable?</h3>
+            <button class="btn-interactivo" onclick="checkAnswer('repaso', false)">Verdadero</button>
+            <button class="btn-interactivo" onclick="checkAnswer('repaso', true)">Falso</button>
+            
+            <div id="feedback-repaso" class="feedback"></div>
+        </div>
+
+        <!-- 11. Metacognición -->
+        <div class="slide" id="slide-11">
+            <h2>💭 Reflexión</h2>
+            <div class="card" style="border-left-color: var(--naranja);">
+                <h3>¿Qué aprendiste hoy?</h3>
+                <p>Tómate unos segundos para pensar cómo le explicarías a un amigo la diferencia entre una cantidad fija y una variable usando tus propias palabras.</p>
+                <div style="font-size: 3rem;">🤔💡</div>
+            </div>
+        </div>
+
+        <!-- 12. Cierre -->
+        <div class="slide" id="slide-12">
+            <h1>¡Felicidades! 🎉</h1>
+            <p>Has completado exitosamente esta lección de Matemática.</p>
+            <div style="font-size: 5rem; margin: 20px 0;">🏅</div>
+            <p style="color: var(--azul);">Ahora estás listo/a para regresar a Canvas y completar tu evidencia de aprendizaje.</p>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 12;
+
+        function changeSlide(direction) {
+            document.getElementById('slide-' + currentSlide).classList.remove('active-slide');
+            currentSlide += direction;
+            
+            // Limites
+            if (currentSlide < 1) currentSlide = 1;
+            if (currentSlide > totalSlides) currentSlide = totalSlides;
+
+            document.getElementById('slide-' + currentSlide).classList.add('active-slide');
+
+            // Mostrar/Ocultar flechas
+            document.getElementById('prev-btn').style.display = currentSlide === 1 ? 'none' : 'block';
+            document.getElementById('next-btn').style.display = currentSlide === totalSlides ? 'none' : 'block';
+            
+            // Ocultar feedbacks al cambiar de slide
+            hideAllFeedbacks();
+        }
+
+        function showExplore(botellas) {
+            const res = document.getElementById('explore-result');
+            res.style.display = 'block';
+            res.innerHTML = `💧 ${botellas} botella(s) = <strong>${botellas * 2} litros</strong> en total.`;
+        }
+
+        function checkAnswer(id, isCorrect) {
+            const feedbackBox = document.getElementById('feedback-' + id);
+            feedbackBox.style.display = 'block';
+            
+            if(isCorrect) {
+                feedbackBox.className = 'feedback correct';
+                feedbackBox.innerHTML = '¡Correcto! 🌟 Muy buen trabajo.';
+            } else {
+                feedbackBox.className = 'feedback incorrect';
+                feedbackBox.innerHTML = 'Ups, no es exacto. Recuerda qué dato es el que está cambiando. ¡Inténtalo de nuevo! 🔄';
+            }
+        }
+
+        function hideAllFeedbacks() {
+            const feedbacks = document.querySelectorAll('.feedback');
+            feedbacks.forEach(fb => fb.style.display = 'none');
+            const explores = document.querySelectorAll('#explore-result, #reflexion');
+            explores.forEach(el => el.style.display = 'none');
+        }
+    </script>
+</body>
+</html>
