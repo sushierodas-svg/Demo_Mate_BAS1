@@ -1,186 +1,360 @@
-html_content = """<!DOCTYPE html>
+simulador_html = """<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Introductorio - Matemática 1° Básico</title>
+    <title>Simulador Canvas LMS - Colegio Escolaris</title>
     <style>
-        /* Paleta Oficial de Colores Escolaris */
+        /* Paleta Oficial e Identidad Visual de Colegio Escolaris */
         :root {
-            --naranja: #db6015;
-            --amarillo: #f7be00;
-            --azul: #244b5a;
-            --rojo: #993921;
-            --fondo-azul: #f0f8ff;
-            --blanco: #ffffff;
+            --canvas-nav: #244b5a;       /* Azul oscuro principal */
+            --canvas-menu: #ffffff;      /* Fondo blanco para menús */
+            --canvas-bg: #f9f9f9;        /* Fondo gris claro de Canvas */
+            --naranja: #db6015;          /* Naranja quemado vibrante */
+            --amarillo: #f7be00;         /* Amarillo dorado cálido */
+            --rojo: #993921;             /* Rojo ladrillo para alertas/acentos */
+            --fondo-azul: #f0f8ff;       /* Azul claro suave para paneles */
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--blanco);
-            color: var(--azul);
+        body, html {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            background-color: var(--canvas-bg);
+            overflow: hidden;
+        }
+
+        /* 1. Barra de Navegación Global (Estilo Canvas LMS Izquierda) */
+        .global-nav {
+            width: 84px;
+            background-color: var(--canvas-nav);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 15px;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .escolaris-logo-box {
+            background-color: var(--blanco);
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+            width: 45px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--naranja);
+            font-size: 0.9rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .global-nav-item {
+            width: 100%;
+            padding: 14px 0;
+            text-align: center;
+            color: #ffffff;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .global-nav-item:hover {
+            background-color: var(--naranja);
+        }
+
+        .global-nav-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--amarillo);
+        }
+
+        .global-nav-icon {
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* 2. Menú Lateral del Curso (Navegación Interna) */
+        .course-nav {
+            width: 260px;
+            background-color: var(--canvas-menu);
+            border-right: 1px solid #e3e4e5;
             padding: 20px;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        h2 {
-            color: var(--naranja);
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.6rem;
+        .course-title {
+            color: var(--canvas-nav);
+            font-size: 1.15rem;
             font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .course-subtitle {
+            font-size: 0.85rem;
+            color: #666666;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--amarillo);
+            padding-bottom: 10px;
+        }
+
+        .module-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .module-item {
+            padding: 12px 14px;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #444444;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .module-item:hover {
+            background-color: var(--fondo-azul);
+            color: var(--naranja);
+        }
+
+        .module-item.active {
+            background-color: #e6f2ff;
+            border-left: 4px solid var(--naranja);
+            font-weight: bold;
+            color: var(--canvas-nav);
+        }
+
+        /* 3. Área de Contenido Central */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Barra Superior con Título del Ítem y Panel de Fundamentación */
+        .header-bar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e3e4e5;
+            padding: 16px 24px;
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            color: #222222;
+            font-weight: bold;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        /* Contenedor del reproductor (Mantiene proporción 16:9 de forma responsiva) */
-        .video-wrapper {
-            width: 100%;
-            background-color: #000000;
-            border-radius: 12px;
+        /* Panel Exclusivo para el Equipo de Reingeniería y Validación Curricular */
+        .justification-panel {
+            background-color: var(--fondo-azul);
+            border-left: 5px solid var(--naranja);
+            border-radius: 4px;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            color: var(--canvas-nav);
+            line-height: 1.5;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+        }
+
+        .justification-panel strong {
+            color: var(--rojo);
+        }
+
+        /* Contenedor del Iframe */
+        .iframe-container {
+            flex: 1;
+            padding: 20px 24px;
+            background-color: var(--canvas-bg);
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-            aspect-ratio: 16 / 9;
-            margin-bottom: 20px;
+            box-sizing: border-box;
         }
 
         iframe {
             width: 100%;
             height: 100%;
-            border: none;
-            display: block;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
         }
 
-        /* Caja de instrucciones para el alumno */
-        .instructions-box {
-            background-color: var(--fondo-azul);
-            border-left: 5px solid var(--amarillo);
-            padding: 20px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 30px;
+        /* 4. Barra de Navegación del Módulo (Botones Inferiores de Canvas) */
+        .module-navigation {
+            height: 74px;
+            background-color: #ffffff;
+            border-top: 1px solid #e3e4e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            flex-shrink: 0;
             box-sizing: border-box;
         }
 
-        .instructions-box p {
-            margin: 0;
-            font-size: 1.05rem;
-            line-height: 1.6;
-        }
-
-        /* Panel exclusivo de Fundamentación Curricular para la Reingeniería */
-        .cnb-panel {
-            background-color: var(--blanco);
-            border: 2px dashed var(--azul);
-            border-radius: 10px;
-            padding: 25px;
-            margin-top: 40px;
-            box-sizing: border-box;
-        }
-
-        .cnb-panel h3 {
-            color: var(--rojo);
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
+        .btn-nav {
+            padding: 10px 22px;
+            background-color: #ffffff;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            color: #333333;
+            font-size: 0.9rem;
+            cursor: pointer;
             font-weight: bold;
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.2s ease;
         }
 
-        .cnb-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            font-size: 0.95rem;
+        .btn-nav:hover:not(:disabled) {
+            background-color: #f5f6f7;
+            border-color: #95a5a6;
         }
 
-        @media (min-width: 600px) {
-            .cnb-grid {
-                grid-template-columns: 120px 1fr;
-            }
+        .btn-nav:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
         }
 
-        .cnb-label {
-            font-weight: bold;
-            color: var(--azul);
-            background-color: var(--fondo-azul);
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: inline-block;
-            align-self: start;
-        }
-
-        .cnb-value {
-            line-height: 1.5;
-            color: #333333;
-            padding-bottom: 8px;
-            border-bottom: 1px calc() solid #eeeeee;
-        }
-
-        .cnb-value:last-child {
-            border-bottom: none;
+        .btn-nav-primary {
+            background-color: #f5f6f7;
+            border-color: #bdc3c7;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <h2>▶️ Video Introductorio: Cuando una cantidad cambia</h2>
-        
-        <div class="video-wrapper">
-            <iframe 
-                src="https://drive.google.com/file/d/1Ln-kviJ9DPnkf04bmUvrSp9oiksZdTAA/preview" 
-                allow="autoplay" 
-                allowfullscreen>
-            </iframe>
-        </div>
-
-        <div class="instructions-box">
-            <p><strong>💡 ¡Hola, estudiante!</strong> Presta mucha atención al reto matemático que plantean los profesores en este video. Analiza qué datos se quedan fijos y cuáles se transforman. Al terminar, haz clic en el botón <strong>Siguiente ➡️</strong> en la parte inferior de tu pantalla en Canvas para continuar con tu Guía Interactiva.</p>
-        </div>
-
-        <div class="cnb-panel">
-            <h3>🦉 Trazabilidad y Fundamentación Curricular (CNB Guatemala)</h3>
-            <p style="font-size: 0.9rem; color: #555; margin-top: 0; margin-bottom: 20px;">
-                Este recurso multimedia ha sido estructurado y validado respetando los lineamientos oficiales del Ministerio de Educación de Guatemala para el Ciclo Básico:
-            </p>
-            
-            <div class="cnb-grid">
-                <div class="cnb-label">Competencia</div>
-                <div class="cnb-value"><strong>Competencia 1:</strong> Identifica elementos comunes en patrones algebraicos y geométricos.</div>
-                
-                <div class="cnb-label">Indicador</div>
-                <div class="cnb-value"><strong>Indicador 1.1:</strong> Representa información cuantitativa generalizada a partir de variables.</div>
-                
-                <div class="cnb-label">Saber (CNB)</div>
-                <div class="cnb-value"><strong>Saber 1.1.1:</strong> Expresiones algebraicas (variables).</div>
-                
-                <div class="cnb-label">Evaluación</div>
-                <div class="cnb-value"><strong>Criterio Oficial:</strong> Utiliza variables para representar patrones.</div>
-
-                <div class="cnb-label">Enfoque Prototipo</div>
-                <div class="cnb-value">
-                    <strong>Activación Motivante:</strong> Inicia el andamiaje cognitivo planteando de forma explícita el reto de la compra de cuadernos a un precio fijo de Q5, detonando la pregunta reflexiva obligatoria: <em>«¿Qué cambia y qué se mantiene igual?»</em> para introducir formalmente el concepto abstracto de variable.
-                </div>
-            </div>
-        </div>
-
+    <div class="global-nav">
+        <div class="escolaris-logo-box">Esc</div>
+        <div class="global-nav-item"><span class="global-nav-icon">👤</span>Cuenta</div>
+        <div class="global-nav-item"><span class="global-nav-icon">🎛️</span>Tablero</div>
+        <div class="global-nav-item active"><span class="global-nav-icon">📚</span>Cursos</div>
+        <div class="global-nav-item"><span class="global-nav-icon">🦉</span>Owlaris</div>
     </div>
 
+    <div class="course-nav">
+        <div class="course-title">Matemática 1° Básico</div>
+        <div class="course-subtitle">Módulo 1: Álgebra Básica</div>
+        
+        <ul class="module-list" id="menu-list">
+            <li class="module-item active" onclick="loadContent(0)">▶️ 1. Video Introductorio</li>
+            <li class="module-item" onclick="loadContent(1)">📖 2. Guía Interactiva</li>
+            <li class="module-item" onclick="loadContent(2)">✏️ 3. Práctica Guiada</li>
+            <li class="module-item" onclick="loadContent(3)">🎬 4. Proyecto Final</li>
+            <li class="module-item" onclick="loadContent(4)">✅ 5. Ticket de Salida</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header-bar">
+            <div class="header-title" id="header-title">1. Video Introductorio</div>
+            
+            <div class="justification-panel" id="justification-text">
+                Cargando fundamentación técnico-pedagógica...
+            </div>
+        </div>
+        
+        <div class="iframe-container">
+            <iframe id="canvas-iframe" src="" title="Contenedor de Contenidos Académicos"></iframe>
+        </div>
+
+        <div class="module-navigation">
+            <button class="btn-nav" id="btn-prev" onclick="navigate(-1)">⬅️ Anterior</button>
+            <button class="btn-nav btn-nav-primary" id="btn-next" onclick="navigate(1)">Siguiente ➡️</button>
+        </div>
+    </div>
+
+    <script>
+        // Mapeo curricular completo extraído de la matriz oficial del Mineduc (Guatemala)
+        const contentPages = [
+            { 
+                title: "1. Video Introductorio: Cuando una cantidad cambia", 
+                file: "video_placeholder.html",
+                justification: "🎯 <strong>Trazabilidad CNB (Saber 1.1.1):</strong> Actúa como la <em>Introducción Motivante</em>. Plantea el reto de los cuadernos a precio fijo (Q5) y detona el conflicto cognitivo mediante la pregunta obligatoria de la matriz: <em>«¿Qué cambia y qué se mantiene igual?»</em> para guiar la inducción sin generar frustración inicial."
+            },
+            { 
+                title: "2. Guía Interactiva: El concepto de variable", 
+                file: "guia.html",
+                justification: "🎯 <strong>Trazabilidad CNB (Saber 1.1.1):</strong> Desarrolla la <em>Lectura Interactiva</em> y la <em>Explicación Teórica</em>. Fundamenta que una variable no es una letra arbitraria, sino un símbolo útil para generalizar múltiples posibilidades reales al mismo tiempo. Cumple con la estructura de 12 pasos compatible con pantallas táctiles."
+            },
+            { 
+                title: "3. Práctica Guiada: Identificación activa con Owlaris", 
+                file: "practica.html",
+                justification: "🎯 <strong>Trazabilidad CNB (Criterio de Evaluación):</strong> Automatiza los ejercicios de la matriz curricular (bolsas de panes, cajas de lápices y cobros de buses). Integra al Tutor Inteligente <strong>Owlaris</strong> de forma socrática: si el alumno erra, despliega un prompt predefinido para pedir una pista, garantizando que la IA nunca resuelva la evidencia final."
+            },
+            { 
+                title: "4. Proyecto Final: Evidencia integrada de desempeño", 
+                file: "proyecto.html",
+                justification: "🎯 <strong>Trazabilidad CNB (Saber 1.1.2):</strong> Convierte la entrega escrita tradicional en una evidencia de alto nivel taxonómico (explicación en video). El estudiante demuestra dominio curricular explicando términos matemáticos de forma aplicada y creando 2 ejemplos cotidianos originales fuera del banco de clase."
+            },
+            { 
+                title: "5. Ticket de Salida: Cierre cognitivo y metacognición", 
+                file: "cierre.html",
+                justification: "🎯 <strong>Trazabilidad CNB (Fase de Cierre):</strong> Ejecuta la fase de metacognición. Consolida el aprendizaje y concluye textualmente con el puente conceptual establecido en el diseño de reingeniería: <em>'Una variable representa una cantidad que puede cambiar. En la siguiente clase la usarás para construir expresiones algebraicas sencillas'</em>."
+            }
+        ];
+
+        let currentIndex = 0;
+
+        // Función central de renderizado y actualización
+        function loadContent(index) {
+            currentIndex = index;
+            
+            // 1. Actualizar el origen del Iframe
+            document.getElementById('canvas-iframe').src = contentPages[currentIndex].file;
+            
+            // 2. Modificar dinámicamente títulos y bloques de justificación CNB
+            document.getElementById('header-title').innerText = contentPages[currentIndex].title;
+            document.getElementById('justification-text').innerHTML = contentPages[currentIndex].justification;
+            
+            // 3. Actualizar la clase activa en el menú de navegación del curso
+            const menuItems = document.querySelectorAll('.module-item');
+            menuItems.forEach(item => item.classList.remove('active'));
+            menuItems[currentIndex].classList.add('active');
+
+            // 4. Controlar estados de activación de los botones inferiores
+            document.getElementById('btn-prev').disabled = currentIndex === 0;
+            document.getElementById('btn-next').disabled = currentIndex === contentPages.length - 1;
+        }
+
+        // Función para interactuar con los controles "Anterior" y "Siguiente"
+        function navigate(direction) {
+            let newIndex = currentIndex + direction;
+            if (newIndex >= 0 && newIndex < contentPages.length) {
+                loadContent(newIndex);
+            }
+        }
+
+        // Inicializar la carga en el primer elemento del módulo
+        window.onload = () => loadContent(0);
+    </script>
 </body>
 </html>
 """
 
-with open("video_placeholder.html", "w", encoding="utf-8") as f:
-    f.write(html_content)
+with open("index.html", "w", encoding="utf-8") as f:
+    f.write(simulador_html)
 
-print("Archivo generado exitosamente.")
+print("index.html generado de forma exitosa.")
