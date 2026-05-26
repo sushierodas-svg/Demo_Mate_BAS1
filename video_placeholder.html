@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Introductorio - Matemática 1° Básico</title>
+    <style>
+        /* Paleta Oficial de Colores Escolaris */
+        :root {
+            --naranja: #db6015;
+            --amarillo: #f7be00;
+            --azul: #244b5a;
+            --rojo: #993921;
+            --fondo-azul: #f0f8ff;
+            --blanco: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--blanco);
+            color: var(--azul);
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: var(--naranja);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Contenedor del reproductor (Mantiene proporción 16:9 de forma responsiva) */
+        .video-wrapper {
+            width: 100%;
+            background-color: #000000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            aspect-ratio: 16 / 9;
+            margin-bottom: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Caja de instrucciones para el alumno */
+        .instructions-box {
+            background-color: var(--fondo-azul);
+            border-left: 5px solid var(--amarillo);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 30px;
+            box-sizing: border-box;
+        }
+
+        .instructions-box p {
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        /* Panel exclusivo de Fundamentación Curricular para la Reingeniería */
+        .cnb-panel {
+            background-color: var(--blanco);
+            border: 2px dashed var(--azul);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 40px;
+            box-sizing: border-box;
+        }
+
+        .cnb-panel h3 {
+            color: var(--rojo);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cnb-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+
+        @media (min-width: 600px) {
+            .cnb-grid {
+                grid-template-columns: 120px 1fr;
+            }
+        }
+
+        .cnb-label {
+            font-weight: bold;
+            color: var(--azul);
+            background-color: var(--fondo-azul);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            align-self: start;
+        }
+
+        .cnb-value {
+            line-height: 1.5;
+            color: #333333;
+            padding-bottom: 8px;
+            border-bottom: 1px calc() solid #eeeeee;
+        }
+
+        .cnb-value:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Encabezado de la Lección -->
+        <h2>▶️ Video Introductorio: Cuando una cantidad cambia</h2>
+        
+        <!-- Contenedor del video integrado desde Google Drive -->
+        <div class="video-wrapper">
+            <iframe 
+                src="https://drive.google.com/file/d/1Ln-kviJ9DPnkf04bmUvrSp9oiksZdTAA/preview" 
+                allow="autoplay" 
+                allowfullscreen>
+            </iframe>
+        </div>
+
+        <!-- Instrucciones Pedagógicas para el Alumno -->
+        <div class="instructions-box">
+            <p><strong>💡 ¡Hola, estudiante!</strong> Presta mucha atención al reto matemático que plantean los profesores en este video. Analiza qué datos se quedan fijos y cuáles se transforman. Al terminar, haz clic en el botón <strong>Siguiente ➡️</strong> en la parte inferior de tu pantalla en Canvas para continuar con tu Guía Interactiva.</p>
+        </div>
+
+        <!-- SECCIÓN DE RESPONSABILIDAD Y FUNDAMENTACIÓN CURRICULAR (Diseñada para el Equipo de Reingeniería) -->
+        <div class="cnb-panel">
+            <h3>🦉 Trazabilidad y Fundamentación Curricular (CNB Guatemala)</h3>
+            <p style="font-size: 0.9rem; color: #555; margin-top: 0; margin-bottom: 20px;">
+                Este recurso multimedia ha sido estructurado y validado respetando los lineamientos oficiales del Ministerio de Educación de Guatemala para el Ciclo Básico:
+            </p>
+            
+            <div class="cnb-grid">
+                <div class="cnb-label">Competencia</div>
+                <div class="cnb-value"><strong>Competencia 1:</strong> Identifica elementos comunes en patrones algebraicos y geométricos.</div>
+                
+                <div class="cnb-label">Indicador</div>
+                <div class="cnb-value"><strong>Indicador 1.1:</strong> Representa información cuantitativa generalizada a partir de variables.</div>
+                
+                <div class="cnb-label">Saber (CNB)</div>
+                <div class="cnb-value"><strong>Saber 1.1.1:</strong> Expresiones algebraicas (variables).</div>
+                
+                <div class="cnb-label">Evaluación</div>
+                <div class="cnb-value"><strong>Criterio Oficial:</strong> Utiliza variables para representar patrones.</div>
+
+                <div class="cnb-label">Enfoque Prototipo</div>
+                <div class="cnb-value">
+                    <strong>Activación Motivante:</strong> Inicia el andamiaje cognitivo planteando de forma explícita el reto de la compra de cuadernos a un precio fijo de Q5, detonando la pregunta reflexiva obligatoria: <em>«¿Qué cambia y qué se mantiene igual?»</em> para introducir formalmente el concepto abstracto de variable.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
